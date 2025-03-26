@@ -16,10 +16,10 @@ namespace Persistence.Context
             
         }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories => this.Set<Category>();  
+        public DbSet<Product> Products => this.Set<Product>();
+        public DbSet<Role> Roles => this.Set<Role>();   
+        public DbSet<User> Users => this.Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
