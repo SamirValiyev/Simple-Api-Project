@@ -11,9 +11,9 @@ namespace Domain
         public int Id { get; set; }
         public  string? Definition { get; set; }
         public List<User>? Users { get; set; }
-        public Role()
-        {
-            Users = new List<User>();   
-        }
+        //public Role()
+        //{
+        //    Users = new List<User>();   
+        //}
     }
 }

@@ -36,8 +36,8 @@ namespace Persistence.Configurations
             builder.Property(p=>p.CategoryId)
                    .IsRequired();
 
-            builder.Property(p=>p.Category)
-                   .IsRequired();
+            //builder.Property(p=>p.Category)
+            //       .IsRequired();
         }
     }
 }
