@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +12,46 @@ namespace Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class,new()
     {
-        public Task AddAsync(T entity)
+        private readonly SimpleDbContext _simpleDbContext;
+        private readonly DbSet<T> _dbSet;
+
+        public GenericRepository(SimpleDbContext simpleDbContext)
         {
-            throw new NotImplementedException();
+            _simpleDbContext = simpleDbContext;
+            _dbSet= _simpleDbContext.Set<T>();
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+           await _dbSet.AddAsync(entity);  
+           await _simpleDbContext.SaveChangesAsync();
         }
 
-        public Task<List<T>> GetAllAsync()
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            await Task.Run(()=>_dbSet.Remove(entity));
+            await _simpleDbContext.SaveChangesAsync();  
         }
 
-        public Task<T> GetByFilterAsync(Expression<Func<T, bool>> predicate)
+        public async Task<List<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public Task<T> GetByIdAsync(object id)
+        public async Task<T> GetByFilterAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _dbSet.AsNoTracking().SingleOrDefaultAsync(predicate);
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task<T> GetByIdAsync(object id)
         {
-            throw new NotImplementedException();
+           return await _dbSet.FindAsync(id);
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+           await Task.Run(()=> _dbSet.Update(entity));  
+           await _simpleDbContext.SaveChangesAsync();
         }
     }
 }
