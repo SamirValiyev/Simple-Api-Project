@@ -1,5 +1,10 @@
 
+using Application;
+using Application.Features.CQRS.Queries;
 using Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Persistence;
+using System.Reflection;
 
 namespace WebApi
 {
@@ -11,13 +16,17 @@ namespace WebApi
 
             // Add services to the container.
             Registration.ConfigureServices(builder.Services, builder.Configuration);
+            RegistrationApplication.ConfigureServicesApp(builder.Services, builder.Configuration);
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllProductQueryRequest).Assembly));
+
 
             var app = builder.Build();
 
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -26,7 +35,6 @@ namespace WebApi
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

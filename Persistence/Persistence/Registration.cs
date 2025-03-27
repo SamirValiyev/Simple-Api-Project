@@ -10,16 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Persistence
 {
     public class Registration
     {
-        public static void ConfigureServices(IServiceCollection services,IConfiguration configuration)
+        public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("LocalCon");
-            services.AddDbContext<SimpleDbContext>(opt=>opt.UseSqlServer(connectionString));    
+            services.AddDbContext<SimpleDbContext>(opt => opt.UseSqlServer(connectionString));
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IProductRepository, ProductRepository>();    
 
         }
     }
