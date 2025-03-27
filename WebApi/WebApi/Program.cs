@@ -1,7 +1,6 @@
 
 using Application;
 using Application.Features.CQRS.Queries;
-using Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using System.Reflection;

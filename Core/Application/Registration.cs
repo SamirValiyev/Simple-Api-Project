@@ -19,7 +19,8 @@ namespace Application
             {
                 opt.AddProfiles(new List<Profile>
                 {
-                        new ProductProfile()
+                        new ProductProfile(),
+                        new CategoryProfile()
                 });
             });
             //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));

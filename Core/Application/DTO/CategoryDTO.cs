@@ -4,16 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Application.DTO
 {
-    public class Category
+    public class CategoryDTO
     {
         public int Id { get; set; }
         public string? Definition { get; set; }
-        public List<Product>? Products { get; set; }
-        //public Category()
-        //{
-        //    Products = new List<Product>();
-        //}
     }
 }
