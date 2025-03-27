@@ -1,5 +1,6 @@
 ﻿using Application.Features.CQRS.Commands.Create;
 using Application.Features.CQRS.Commands.Delete;
+using Application.Features.CQRS.Commands.Update;
 using Application.Features.CQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -41,9 +42,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductCommandRequest request)
         {
-           await _mediator.Send(request);
-           return Created("",request);
+            await _mediator.Send(request);
+            return Created("", request);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateProductCommandRequest request)
+        {
+            await _mediator.Send(request);
+            return NoContent();
+
+        }
     }
 }
