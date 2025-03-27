@@ -1,4 +1,5 @@
-﻿using Application.Features.CQRS.Queries;
+﻿using Application.Features.CQRS.Commands.Delete;
+using Application.Features.CQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,15 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetProduct(int id)
         {
             var result = await _mediator.Send(new GetProductQueryRequest(id));
-            return result==null ? NotFound() : Ok(result);
+            return result == null ? NotFound() : Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await _mediator.Send(new DeleteProductCommandRequest(id));
+            return NoContent();
+        }
+
     }
 }
