@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CQRS.Queries
 {
-    public class GetAllProductQueryRequest : IRequest<List<ProductsDTO>>
+    public class GetAllProductQueryRequest : IRequest<List<ProductDTO>>
     {
     }
 }

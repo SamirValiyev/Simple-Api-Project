@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\CQRS\Commands\Create\" />
     <Folder Include="Features\CQRS\Commands\Update\" />
   </ItemGroup>
 

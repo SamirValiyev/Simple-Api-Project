@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CQRS.Queries
 {
-    public class GetProductQueryRequest:IRequest<ProductsDTO>
+    public class GetProductQueryRequest:IRequest<ProductDTO>
     {
         public int Id { get; set; }
 

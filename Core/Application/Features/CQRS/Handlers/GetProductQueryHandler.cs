@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CQRS.Handlers
 {
-    public class GetProductQueryHandler : IRequestHandler<GetProductQueryRequest, ProductsDTO>
+    public class GetProductQueryHandler : IRequestHandler<GetProductQueryRequest, ProductDTO>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
@@ -22,10 +22,10 @@ namespace Application.Features.CQRS.Handlers
             _mapper = mapper;
         }
 
-        public async Task<ProductsDTO> Handle(GetProductQueryRequest request, CancellationToken cancellationToken)
+        public async Task<ProductDTO> Handle(GetProductQueryRequest request, CancellationToken cancellationToken)
         {
            var product = await _productRepository.GetByFilterAsync(x=>x.Id == request.Id);
-            return _mapper.Map<ProductsDTO>(product);   
+            return _mapper.Map<ProductDTO>(product);   
         }
     }
 }

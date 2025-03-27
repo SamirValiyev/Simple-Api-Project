@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CQRS.Handlers
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductQueryRequest, List<ProductsDTO>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductQueryRequest, List<ProductDTO>>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
@@ -22,10 +22,10 @@ namespace Application.Features.CQRS.Handlers
         }
 
 
-        public async Task<List<ProductsDTO>> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
+        public async Task<List<ProductDTO>> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetAllAsync();
-            return  _mapper.Map<List<ProductsDTO>>(products);
+            return  _mapper.Map<List<ProductDTO>>(products);
 
         }
     }
