@@ -11,22 +11,21 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CQRS.Handlers
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductQueryRequest, List<ProductsDTO>>
+    public class GetProductQueryHandler : IRequestHandler<GetProductQueryRequest, ProductsDTO>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public GetAllProductsQueryHandler(IProductRepository productRepository, IMapper mapper)
+
+        public GetProductQueryHandler(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
         }
 
-
-        public async Task<List<ProductsDTO>> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
+        public async Task<ProductsDTO> Handle(GetProductQueryRequest request, CancellationToken cancellationToken)
         {
-            var products = await _productRepository.GetAllAsync();
-            return  _mapper.Map<List<ProductsDTO>>(products);
-
+           var product = await _productRepository.GetByFilterAsync(x=>x.Id == request.Id);
+            return _mapper.Map<ProductsDTO>(product);   
         }
     }
 }

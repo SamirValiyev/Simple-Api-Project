@@ -21,5 +21,12 @@ namespace WebApi.Controllers
             var result = await _mediator.Send(new GetAllProductQueryRequest());
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var result = await _mediator.Send(new GetProductQueryRequest(id));
+            return result==null ? NotFound() : Ok(result);
+        }
     }
 }
