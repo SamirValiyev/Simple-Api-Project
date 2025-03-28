@@ -25,7 +25,7 @@ namespace Application.Features.CQRS.Handlers
             {
                 Name=request.UserName,
                 Password = request.Password,
-                RoleId=(int)Role.Member
+                RoleId=(int)RoleEnum.Member
             });
         }
     }

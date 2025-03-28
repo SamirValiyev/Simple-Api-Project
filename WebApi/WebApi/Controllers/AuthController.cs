@@ -1,7 +1,9 @@
 ﻿using Application.Features.CQRS.Commands.Create;
+using Application.Features.CQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace WebApi.Controllers
 {
@@ -16,11 +18,25 @@ namespace WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("register")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register(RegisterUserCommandRequest request)
         {
             await _mediator.Send(request);
             return Ok();
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(UserQueryRequest request)
+        {
+           var dto= await _mediator.Send(request);
+
+            if (dto.IsExist)
+            {
+                return Created("", "Token yarat");
+            }
+            else
+            {
+                return BadRequest("Istifadeci adi ve ya sifre tapilmadi");
+            }
         }
 
     }
