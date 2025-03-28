@@ -30,6 +30,12 @@ namespace Persistence.Context
                 new Category(){Id=3,Definition="Books"}
 
             });
+            modelBuilder.Entity<Role>().HasData(new Role[] 
+            { 
+               new Role(){Id=1,Definition="Admin"},
+               new Role(){Id=2,Definition="Member"}
+            });
+          
             modelBuilder.Entity<Product>().HasData(new Product[] 
             {
                 new Product(){Id=1,Name="Acer Swift 3",Price=5000,Stock=100,CategoryId=1},
