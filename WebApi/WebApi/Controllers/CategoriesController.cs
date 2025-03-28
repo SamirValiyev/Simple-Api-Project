@@ -1,4 +1,7 @@
-﻿using Application.Features.CQRS.Queries;
+﻿using Application.Features.CQRS.Commands.Create;
+using Application.Features.CQRS.Commands.Delete;
+using Application.Features.CQRS.Commands.Update;
+using Application.Features.CQRS.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +32,27 @@ namespace WebApi.Controllers
         {
             var category = await _mediator.Send(new GetCategoryQueryRequest(id));
             return category == null ? NotFound() : Ok(category);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateCategroyCommandRequest request)
+        {
+            await _mediator.Send(request);
+            return Created("",request);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateCategoryCommandRequest request)
+        {
+            await _mediator.Send(request);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _mediator.Send(new DeleteCategoryCommandRequest(id));
+            return NoContent();
         }
 
     }
