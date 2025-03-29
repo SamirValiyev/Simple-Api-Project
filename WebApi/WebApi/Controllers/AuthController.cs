@@ -1,5 +1,6 @@
 ﻿using Application.Features.CQRS.Commands.Create;
 using Application.Features.CQRS.Queries;
+using Infrastructure.Tools;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace WebApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -28,10 +30,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Login(UserQueryRequest request)
         {
            var dto= await _mediator.Send(request);
+            
 
             if (dto.IsExist)
             {
-                return Created("", "Token yarat");
+                return Created("",new JwtGenerator().TokenGenerate(dto));
             }
             else
             {

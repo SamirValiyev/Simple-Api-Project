@@ -3,11 +3,13 @@ using Application.Features.CQRS.Commands.Delete;
 using Application.Features.CQRS.Commands.Update;
 using Application.Features.CQRS.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin,Member")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

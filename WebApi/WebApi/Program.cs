@@ -1,6 +1,8 @@
 
 using Application;
 using Application.Features.CQRS.Queries;
+using Infrastructure;
+using Infrastructure.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +17,7 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            JwtDefaults.Initialize(builder.Configuration);
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
@@ -22,19 +25,22 @@ namespace WebApi
                     opt.RequireHttpsMetadata = false;
                     opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
-                        ValidAudience = "http://localhost",
-                        ValidIssuer = "http://localhost",
-                        ClockSkew = TimeSpan.Zero,
-                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("samirsamirsamirsamirsamir")),
-                        ValidateIssuerSigningKey=true,
-                        ValidateLifetime = true
+                       ValidateAudience = true,
+                       ValidateIssuer = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Token:Issuer"],
+                        ValidAudience = builder.Configuration["Token:Audience"],
+                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"])),
+                        ClockSkew=TimeSpan.Zero
                     };
 
                 });
 
             // Add services to the container.
             Registration.ConfigureServices(builder.Services, builder.Configuration);
-            RegistrationApplication.ConfigureServicesApp(builder.Services, builder.Configuration);
+            RegistrationApplication.ConfigureServices(builder.Services, builder.Configuration);
+            RegistrationInfrastructure.ConfigureServices(builder.Services, builder.Configuration);
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -44,14 +50,14 @@ namespace WebApi
 
             var app = builder.Build();
 
-           
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

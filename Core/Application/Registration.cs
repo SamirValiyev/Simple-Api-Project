@@ -13,7 +13,7 @@ namespace Application
 {
     public class RegistrationApplication
     {
-        public static void ConfigureServicesApp(IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(opt =>
             {
