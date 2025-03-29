@@ -1,9 +1,12 @@
 
 using Application;
 using Application.Features.CQRS.Queries;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using System.Reflection;
+using System.Text;
 
 namespace WebApi
 {
@@ -12,6 +15,22 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+                opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidAudience = "http://localhost",
+                        ValidIssuer = "http://localhost",
+                        ClockSkew = TimeSpan.Zero,
+                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("samirsamirsamirsamirsamir")),
+                        ValidateIssuerSigningKey=true,
+                        ValidateLifetime = true
+                    };
+
+                });
 
             // Add services to the container.
             Registration.ConfigureServices(builder.Services, builder.Configuration);
