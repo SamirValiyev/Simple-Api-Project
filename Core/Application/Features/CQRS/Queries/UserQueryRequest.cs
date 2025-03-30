@@ -10,7 +10,7 @@ namespace Application.Features.CQRS.Queries
 {
     public class UserQueryRequest:IRequest<UserResponseDTO>
     {
-        public string? UserName { get; set; } = null!;
-        public string? Password { get; set; } = null!;
+        public string UserName { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 }

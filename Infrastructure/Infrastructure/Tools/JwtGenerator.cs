@@ -14,10 +14,9 @@ namespace Infrastructure.Tools
     public  class JwtGenerator
     {
       
-
         public TokenResponseDTO TokenGenerate(UserResponseDTO dto)
         {
-           
+              
             var claims = new List<Claim>();
             if (!string.IsNullOrEmpty(dto.Role))
                 claims.Add(new Claim(ClaimTypes.Role, dto.Role));

@@ -30,6 +30,11 @@ namespace Persistence.Context
                 new Category(){Id=3,Definition="Books"}
 
             });
+            modelBuilder.Entity<User>().HasData(new User[]
+            {
+                new User(){Id=1,Name="Member",Password="123",RoleId=2},
+                new User(){Id=2,Name="Admin",Password="1234",RoleId=1}
+            });
             modelBuilder.Entity<Role>().HasData(new Role[] 
             { 
                new Role(){Id=1,Definition="Admin"},
