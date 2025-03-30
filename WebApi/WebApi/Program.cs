@@ -29,9 +29,9 @@ namespace WebApi
                        ValidateIssuer = true,
                        ValidateLifetime = true,
                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Token:Issuer"],
-                        ValidAudience = builder.Configuration["Token:Audience"],
-                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"])),
+                        ValidIssuer = JwtDefaults.ValidIssuer,
+                        ValidAudience = JwtDefaults.ValidAudience,
+                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtDefaults.SecretKey)),
                         ClockSkew=TimeSpan.Zero
                     };
 
