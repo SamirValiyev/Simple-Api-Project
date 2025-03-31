@@ -1,0 +1,38 @@
+﻿@model List<CategoryResponseModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    if(Model?.Count > 0){
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Definition</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+
+                        <td>@category.Id</td>
+                        <td>@category.Name</td>
+                        <td>@category.Definition</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+    }
+    else{
+        <div class="alert alert-danger">
+            <h1>No Category Found</h1>
+        </div>
+    }
+
+}

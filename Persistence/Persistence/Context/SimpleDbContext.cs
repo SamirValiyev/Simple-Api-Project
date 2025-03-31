@@ -25,9 +25,9 @@ namespace Persistence.Context
         {
             modelBuilder.Entity<Category>().HasData(new Category[]
             {
-                new Category(){Id=1,Definition="Electronics"},
-                new Category(){Id=2,Definition="Clothing"},
-                new Category(){Id=3,Definition="Books"}
+                new Category(){Id=1,Definition="Electronics",Name="Electronic"},
+                new Category(){Id=2,Definition="Clothing",Name="Cloth"},
+                new Category(){Id=3,Definition="Books",Name="Book"}
 
             });
             modelBuilder.Entity<User>().HasData(new User[]

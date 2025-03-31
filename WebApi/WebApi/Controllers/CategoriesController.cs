@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Categories()
+        public async Task<IActionResult> GetCategories()
         {
             var categories=await _mediator.Send(new GetAllCategoryQueryRequest());
             return categories == null ? NotFound() : Ok(categories);

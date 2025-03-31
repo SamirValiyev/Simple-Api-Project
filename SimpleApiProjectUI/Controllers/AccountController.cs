@@ -49,7 +49,11 @@ namespace SimpleApiProjectUI.Controllers
                         JwtSecurityTokenHandler tokenHandler = new();
                         var token=tokenHandler.ReadJwtToken(tokenModel.AccessToken);
 
-                        var claimsIdentity=new ClaimsIdentity(token.Claims, JwtBearerDefaults.AuthenticationScheme);
+                        var tokenClaims = token.Claims.ToList();
+                        if(tokenModel.AccessToken!=null)
+                        tokenClaims.Add(new Claim("accessToken",tokenModel.AccessToken));
+
+                        var claimsIdentity=new ClaimsIdentity(tokenClaims, JwtBearerDefaults.AuthenticationScheme);
                         var authProps = new AuthenticationProperties
                         {
                             ExpiresUtc = tokenModel.ExpireDate,

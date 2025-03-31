@@ -18,6 +18,10 @@ namespace Persistence.Configurations
             builder.Property(c => c.Id)
                    .ValueGeneratedOnAdd();
 
+            builder.Property(c => c.Name)
+                   .HasMaxLength(50)
+                   .IsRequired();
+
             builder.Property(c => c.Definition)
                    .HasMaxLength(100)
                    .IsRequired();
