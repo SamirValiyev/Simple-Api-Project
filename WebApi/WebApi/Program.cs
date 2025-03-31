@@ -38,7 +38,7 @@ namespace WebApi
                 });
 
             // Add services to the container.
-            Registration.ConfigureServices(builder.Services, builder.Configuration);
+            RegistrationPersistence.ConfigureServices(builder.Services, builder.Configuration);
             RegistrationApplication.ConfigureServices(builder.Services, builder.Configuration);
             RegistrationInfrastructure.ConfigureServices(builder.Services, builder.Configuration);
             builder.Services.AddControllers();

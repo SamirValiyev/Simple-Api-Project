@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleApiProjectUI.Models;
 using System.Diagnostics;
 
 namespace SimpleApiProjectUI.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,6 +29,18 @@ namespace SimpleApiProjectUI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public string AdminPage()
+        {
+            return "Admin Page";
+        }
+
+        [Authorize(Roles = "Member")]
+        public string MemberPage()
+        {
+            return "Member Page";
         }
     }
 }

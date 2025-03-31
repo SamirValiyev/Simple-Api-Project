@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class Registration
+    public class RegistrationPersistence
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
