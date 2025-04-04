@@ -16,7 +16,6 @@ namespace SimpleApiProjectUI.Controllers
 
         public async Task<IActionResult> GetCategories()
         {
-            
             var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
             if (token != null)
             {
@@ -32,9 +31,20 @@ namespace SimpleApiProjectUI.Controllers
                     });
                     return View(result);
                 }
-
             }
+            return View();
+        }
 
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
+            if (token != null)
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                var response=await client.DeleteAsync($"http://localhost:5128/api/categories/{id}");
+                return RedirectToAction("GetCategories");
+            }
             return View();
         }
     }

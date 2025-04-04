@@ -11,16 +11,20 @@
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Definition</th>
+                    <th scope="col">Operation</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var category in Model)
                 {
                     <tr>
-
+                        <td></td>
                         <td>@category.Id</td>
                         <td>@category.Name</td>
                         <td>@category.Definition</td>
+                        <td>
+                           <a asp-controller="Category" asp-action="DeleteCategory" asp-route-Id="@category.Id"  class="btn btn-danger btn-sm">Sil</a>
+                        </td>
                     </tr>
                 }
 
