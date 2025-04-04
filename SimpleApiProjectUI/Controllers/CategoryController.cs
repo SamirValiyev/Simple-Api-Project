@@ -22,7 +22,7 @@ namespace SimpleApiProjectUI.Controllers
             {
                 var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,token);
-                var response = await client.GetAsync("http://localhost:5128/api/Categories/GetCategories");
+                var response = await client.GetAsync("http://localhost:5128/api/categories");
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonData= await response.Content.ReadAsStringAsync();
