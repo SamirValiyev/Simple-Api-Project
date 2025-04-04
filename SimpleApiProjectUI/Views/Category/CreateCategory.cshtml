@@ -1,0 +1,20 @@
+﻿@model CategoryRequestModel;
+@{
+    Layout = "_Layout";
+}
+
+<form class="form-control" asp-action="CreateCategory" asp-controller="Category" method="post">
+    <div class="mb-3">
+        <label asp-for="@Model.Name" class="form-label">Name:</label>
+        <input asp-for="@Model.Name" class="form-control" placeholder="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Model.Definition" class="form-label">Definition:</label>
+        <input asp-for="@Model.Definition" class="form-control" placeholder="Definition" />
+        <span asp-validation-for="Definition" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

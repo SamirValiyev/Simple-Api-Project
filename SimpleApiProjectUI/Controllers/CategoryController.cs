@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using SimpleApiProjectUI.Models;
+using System.Text;
 using System.Text.Json;
 
 namespace SimpleApiProjectUI.Controllers
@@ -46,6 +47,37 @@ namespace SimpleApiProjectUI.Controllers
                 return RedirectToAction("GetCategories");
             }
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult CreateCategory()
+        {
+            return View(new CategoryRequestModel());
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory(CategoryRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
+                if (token != null)
+                {
+                    var client = _httpClientFactory.CreateClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                    var jsonData = JsonSerializer.Serialize(model);
+
+                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("http://localhost:5128/api/categories", content);
+
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction("GetCategories");
+                    else
+                       ModelState.AddModelError(String.Empty, "Error occurred while creating category");    
+
+                }
+            }
+            return View(model);
+          
         }
     }
 }

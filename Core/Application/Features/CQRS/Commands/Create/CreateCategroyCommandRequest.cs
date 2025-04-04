@@ -10,5 +10,7 @@ namespace Application.Features.CQRS.Commands.Create
     public class CreateCategroyCommandRequest:IRequest
     {
         public string? Definition { get; set; }
+
+        public string Name { get; set; }
     }
 }

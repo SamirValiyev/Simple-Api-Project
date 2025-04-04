@@ -22,7 +22,9 @@ namespace Application.Features.CQRS.Handlers
         {
             await _categoryRepository.AddAsync(new Domain.Category
             {
-                Definition = request.Definition
+                Definition = request.Definition,
+                Name = request.Name
+
             });
         }
     }
