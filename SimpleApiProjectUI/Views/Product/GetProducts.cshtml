@@ -31,6 +31,7 @@
                         <td>@product.CategoryId</td>
                         <td>
                             <a asp-controller="Product" asp-action="Delete" asp-route-Id="@product.Id" class="btn btn-danger btn-sm">Sil</a>
+                            <a asp-controller="Product" asp-action="Update" asp-route-Id="@product.Id" class="btn btn-warning">Update</a>
                         </td>
                     </tr>
                 }
