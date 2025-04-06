@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SimpleApiProjectUI.Models;
 using System.Text;
 using System.Text.Json;
@@ -121,6 +122,34 @@ namespace SimpleApiProjectUI.Controllers
                 }
             }
             return RedirectToAction("GetProducts");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductCreateModel model)
+        {
+            var data = TempData["Categories"]?.ToString();
+            if(data is not null)
+            {
+                var categories=JsonSerializer.Deserialize<List<SelectListItem>>(data);
+                model.Categories=new SelectList(categories,"Value", "Text");    
+            }
+
+            if (ModelState.IsValid)
+            {
+                var token = User.Claims.FirstOrDefault(x => x.Type == "accesToken")?.Value;
+                if(token is not null)
+                {
+                    var client = _httpClientFactory.CreateClient();
+                    client.DefaultRequestHeaders.Authorization=new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,token);
+                    var jsonData=JsonSerializer.Serialize(model);
+                    var content=new StringContent(jsonData,Encoding.UTF8,"application/json");
+                    var response = await client.PostAsync($"http://localhost:5128/api/products",content);
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction("GetProducts");
+                    else
+                        ModelState.AddModelError(String.Empty,"Error occurred while creating product");
+                }
+            }
+            return View(model);
         }
     }
 }

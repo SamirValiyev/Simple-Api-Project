@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,7 @@ namespace SimpleApiProjectUI.Controllers
                         if(tokenModel.AccessToken!=null)
                         tokenClaims.Add(new Claim("accessToken",tokenModel.AccessToken));
 
-                        var claimsIdentity=new ClaimsIdentity(tokenClaims, JwtBearerDefaults.AuthenticationScheme);
+                        var claimsIdentity=new ClaimsIdentity(tokenClaims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var authProps = new AuthenticationProperties
                         {
                             ExpiresUtc = tokenModel.ExpireDate,
@@ -61,7 +62,7 @@ namespace SimpleApiProjectUI.Controllers
                         };
 
                       //  var claims = new ClaimsPrincipal(tokenModel.AccessToken,)
-                       await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme,new ClaimsPrincipal(claimsIdentity),authProps);
+                       await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new ClaimsPrincipal(claimsIdentity),authProps);
 
                         return RedirectToAction("Index", "Home");   
                     }
