@@ -26,8 +26,6 @@ namespace SimpleApiProjectUI.Controllers
             return View();
         }
 
-      
-
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginModel userLogin)
         {
@@ -54,7 +52,7 @@ namespace SimpleApiProjectUI.Controllers
                         if(tokenModel.AccessToken!=null)
                         tokenClaims.Add(new Claim("accessToken",tokenModel.AccessToken));
 
-                        var claimsIdentity=new ClaimsIdentity(tokenClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsIdentity=new ClaimsIdentity(tokenClaims,JwtBearerDefaults.AuthenticationScheme);
                         var authProps = new AuthenticationProperties
                         {
                             ExpiresUtc = tokenModel.ExpireDate,
@@ -62,7 +60,7 @@ namespace SimpleApiProjectUI.Controllers
                         };
 
                       //  var claims = new ClaimsPrincipal(tokenModel.AccessToken,)
-                       await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new ClaimsPrincipal(claimsIdentity),authProps);
+                       await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),authProps);
 
                         return RedirectToAction("Index", "Home");   
                     }
