@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SimpleApiProjectUI.Models
 {
-    public class ProductCreateModel
+    public class ProductRequestModel
     {
         [Required(ErrorMessage="Name must be full")]
         public string? Name { get; set; }

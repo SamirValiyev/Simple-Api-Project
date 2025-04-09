@@ -103,7 +103,7 @@ namespace SimpleApiProjectUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var model = new ProductCreateModel();
+            var model = new ProductRequestModel();
             var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
             if (token is not null)
             {
@@ -125,7 +125,7 @@ namespace SimpleApiProjectUI.Controllers
             return RedirectToAction("GetProducts");
         }
         [HttpPost]
-        public async Task<IActionResult> Create(ProductCreateModel model)
+        public async Task<IActionResult> Create(ProductRequestModel model)
         {
             var data = TempData["Categories"]?.ToString();
             if(data is not null)

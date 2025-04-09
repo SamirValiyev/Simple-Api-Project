@@ -82,5 +82,52 @@ namespace SimpleApiProjectUI.Controllers
             return View(model);
           
         }
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
+            if(token is not null)
+            {
+                var client=_httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization=new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,token);
+                var response = await client.GetAsync($"http://localhost:5128/api/categories/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData=await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<CategoryResponseModel>(jsonData, new JsonSerializerOptions
+                    {
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    });
+                    return View(result);
+                }
+
+
+            }
+            return View();  
+
+        }
+        [HttpPost]  
+        public async Task<IActionResult> Update(CategoryRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
+                if(token is not null)
+                {
+                    var client =_httpClientFactory.CreateClient();
+                    client.DefaultRequestHeaders.Authorization=new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,token);
+                    var jsonData=JsonSerializer.Serialize(model);
+                    var content=new StringContent(jsonData,Encoding.UTF8,"application/json");
+                    var response = await client.PutAsync("http://localhost:5128/api/categories", content);
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction("GetCategories", "Category");
+                    else
+                        ModelState.AddModelError(String.Empty, "Error occurred while updating category");
+                }
+
+            }
+            return View();
+        }
+
     }
 }
