@@ -45,19 +45,32 @@ namespace SimpleApiProjectUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
+
             var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
             if (token is not null)
             {
                 var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
-                var response = await client.GetAsync($"http://localhost:5128/api/products/{id}");
-                if (response.IsSuccessStatusCode)
+                var responseProduct = await client.GetAsync($"http://localhost:5128/api/products/{id}");
+                if (responseProduct.IsSuccessStatusCode)
                 {
-                    var jsonData = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize<ProductResponseModel>(jsonData, new JsonSerializerOptions
+                    var jsonData = await responseProduct.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<ProductRequestModel>(jsonData, new JsonSerializerOptions
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     });
+                    var responseCategory = await client.GetAsync($"http://localhost:5128/api/categories");
+                    if(responseCategory is not null)
+                    {
+                        var jsonCategoryData=await responseCategory.Content.ReadAsStringAsync();
+                        var data = JsonSerializer.Deserialize<List<CategoryResponseModel>>(jsonCategoryData, new JsonSerializerOptions
+                        {
+                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                        });
+                        if (result is not null)
+                            result.Categories = new SelectList(data, "Id", "Name");
+
+                    }
                     return View(result);
                 }
             }
@@ -65,8 +78,14 @@ namespace SimpleApiProjectUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(ProductResponseModel model)
-        {
+        public async Task<IActionResult> Update(ProductRequestModel model)
+        { 
+            var data = TempData["Categories"]?.ToString();
+            if(data is not null)
+            {
+                var categories = JsonSerializer.Deserialize<List<SelectListItem>>(data);
+                model.Categories=new SelectList(categories,"Value","Text",model.CategoryId);
+            }
             if (ModelState.IsValid)
             {
                 var token = User.Claims.FirstOrDefault(x => x.Type == "accessToken")?.Value;
@@ -82,6 +101,7 @@ namespace SimpleApiProjectUI.Controllers
                     else
                         ModelState.AddModelError(String.Empty, "Error occurred while updating product");
                 }
+
             }
             return View(model);
         }
@@ -118,7 +138,7 @@ namespace SimpleApiProjectUI.Controllers
                     {
                         PropertyNamingPolicy=JsonNamingPolicy.CamelCase
                     });
-                    model.Categories = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(data, "Id", "Definition");
+                    model.Categories = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(data, "Id", "Name");
                     return View(model);
                 }
             }

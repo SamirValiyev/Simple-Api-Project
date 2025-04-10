@@ -5,6 +5,8 @@ namespace SimpleApiProjectUI.Models
 {
     public class ProductRequestModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage="Name must be full")]
         public string? Name { get; set; }
 

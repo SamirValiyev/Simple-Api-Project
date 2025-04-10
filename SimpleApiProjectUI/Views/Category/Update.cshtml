@@ -1,9 +1,13 @@
-﻿@model CategoryRequestModel;
+﻿@using System.Text.Json
+@model CategoryRequestModel;
 @{
     Layout = "_Layout";
 }
 
 <form class="form-control" asp-action="Update" asp-controller="Category" method="post">
+    @{
+        TempData["Categories"] = JsonSerializer.Serialize(Model.Categories);
+    }
 
     <input  type="hidden" asp-for="@Model.Id"/>
  
